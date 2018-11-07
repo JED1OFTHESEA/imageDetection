@@ -13,7 +13,7 @@ ap.add_argument("-i", "--image", required=True,
 	help="path to the input image")
 ap.add_argument("-s", "--shape", required=True,
                 help="shape to be detected")
-ap.add_argument("-c", "--color,", required=True,
+ap.add_argument("-c", "--color", required=True,
                  help="color of shape to be detected")
 ap.add_argument("-o", "--output", required=True,
                  help="name of output file")
@@ -24,7 +24,23 @@ args = vars(ap.parse_args())
 # flags to be used for image searching
 image = cv2.imread(args["image"])
 fshape = args["shape"]
+color = args["color"]
 output = args["output"]
+if color == "blue":
+        blue = 255
+        green = 0
+        red = 0
+elif color == "green":
+        blue = 0
+        green = 0
+        red = 0
+elif color == "red":
+        blue = 0
+        green = 0
+        red = 255
+else:
+        print("Please use red, green, or blue")
+        quit()
 resized = imutils.resize(image, width=300)
 ratio = image.shape[0] / float(resized.shape[0])
 
@@ -56,7 +72,7 @@ for c in cnts:
                 c = c.astype("float")
                 c *= ratio
                 c = c.astype("int")
-                cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+                cv2.drawContours(image, [c], -1, (blue, green, red), 2)
                 cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
                         0.5, (255, 255, 255), 2)
 
